@@ -32,8 +32,8 @@ server:
       port: 8080
     - type: https
       port: 8443
-      keyStorePath: skytrail.keystore
-      keyStorePassword: skytrail
+      keyStorePath: example.keystore
+      keyStorePassword: example
       validateCerts: false
 # this requires the npn-boot library on the JVM's boot classpath
 #    - type: spdy3
@@ -46,8 +46,8 @@ server:
       port: 8081
     - type: https
       port: 8444
-      keyStorePath: skytrail.keystore
-      keyStorePassword: skytrail
+      keyStorePath: example.keystore
+      keyStorePassword: example 
       validateCerts: false
 
 # Logging settings.

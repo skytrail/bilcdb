@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="" type="com.skytrail.views.PersonView" -->
+<#-- @ftlvariable name="" type="org.skytrail.views.PersonView" -->
 <html>
     <body>
         <!-- calls getPerson().getFullName() and sanitizes it -->
