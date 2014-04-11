@@ -15,7 +15,7 @@ database:
   password: sa
 
   # the JDBC URL
-  url: jdbc:h2:target/example
+  url: jdbc:h2:target/skytrail
 
 # use the simple server factory if you only want to run on a single port
 #server:
@@ -32,22 +32,22 @@ server:
       port: 8080
     - type: https
       port: 8443
-      keyStorePath: example.keystore
-      keyStorePassword: example
+      keyStorePath: skytrail.keystore
+      keyStorePassword: skytrail
       validateCerts: false
 # this requires the npn-boot library on the JVM's boot classpath
 #    - type: spdy3
 #      port: 8445
-#      keyStorePath: example.keystore
-#      keyStorePassword: example
+#      keyStorePath: skytrail.keystore
+#      keyStorePassword: skytrail
 #      validateCerts: false
   adminConnectors:
     - type: http
       port: 8081
     - type: https
       port: 8444
-      keyStorePath: example.keystore
-      keyStorePassword: example
+      keyStorePath: skytrail.keystore
+      keyStorePassword: skytrail
       validateCerts: false
 
 # Logging settings.
@@ -59,8 +59,8 @@ logging:
   # Logger-specific levels.
   loggers:
 
-    # Sets the level for 'com.example.app' to DEBUG.
-    com.example.app: DEBUG
+    # Sets the level for 'com.skytraill.app' to DEBUG.
+    com.skytrail.app: DEBUG
 
     org.hibernate.SQL: ALL
 

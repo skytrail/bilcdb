@@ -5,14 +5,15 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
-    <groupId>io.dropwizard</groupId>
-    <artifactId>dropwizard-example</artifactId>
-    <version>0.7.1-SNAPSHOT</version>
-    <name>Dropwizard Example Application</name>
+    <groupId>org.skytrail</groupId>
+    <artifactId>bilcdb</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Web Service for Immigrant Legal Center Database</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <dropwizard.version>0.7.0</dropwizard.version>
     </properties>
 
     <repositories>
@@ -24,45 +25,47 @@
     </repositories>
 
     <dependencies>
-        <dependency>
+         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-auth</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
+       <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-assets</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-spdy</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-hibernate</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-migrations</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-views-freemarker</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-views-mustache</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -72,7 +75,7 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-testing</artifactId>
-            <version>${project.version}</version>
+            <version>${dropwizard.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -159,7 +162,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.example.helloworld.HelloWorldApplication</mainClass>
+                                    <mainClass>org.skytrail.bilcdb.HelloWorldApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -168,7 +171,7 @@
             </plugin>
             <plugin>
                 <!-- You'll probably want to remove this for your project. I'm just using it here
-                     so that dropwizard-example doesn't get deployed as a library. -->
+                     so that dropwizard-skytrail doesn't get deployed as a library. -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.7</version>
@@ -177,8 +180,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!-- You'll probably want to remove this for your project. I'm just using it here
-                     so that dropwizard-example site doesn't get staged and deployed. -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.3</version>
