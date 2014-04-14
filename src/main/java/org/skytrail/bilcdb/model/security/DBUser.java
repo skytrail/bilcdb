@@ -6,12 +6,8 @@ import javax.persistence.*;
 @Table(name = "people")
 @NamedQueries({
     @NamedQuery(
-        name = "com.example.helloworld.core.Person.findAll",
-        query = "SELECT p FROM Person p"
-    ),
-    @NamedQuery(
-        name = "com.example.helloworld.core.Person.findById",
-        query = "SELECT p FROM Person p WHERE p.id = :id"
+        name = "org.skytrail.bilcdb.model.security.DBUser.findById",
+        query = "SELECT p FROM DBUser p WHERE p.id = :id"
     )
 })
 public class DBUser {

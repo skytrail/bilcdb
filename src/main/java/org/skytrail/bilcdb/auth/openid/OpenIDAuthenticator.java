@@ -3,7 +3,7 @@ package org.skytrail.bilcdb.auth.openid;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.dropwizard.auth.AuthenticationException;
-import io.dropwizard.auth.Authenticator;
+import org.skytrail.bilcdb.auth.BILCAuthenticator;
 import org.skytrail.bilcdb.db.OpenIdAuthDAO;
 import org.skytrail.bilcdb.model.security.DBUser;
 import org.skytrail.bilcdb.session.SessionManager;
@@ -16,15 +16,13 @@ import org.skytrail.bilcdb.session.SessionManager;
  *
  * @since 0.0.1
  */
-public class OpenIDAuthenticator implements Authenticator<OpenIDCredentials, DBUser> {
+public class OpenIDAuthenticator implements BILCAuthenticator<OpenIDCredentials> {
 
     private final SessionManager sessionManager;
-    private final OpenIdAuthDAO dao;
 
     @Inject
-    public OpenIDAuthenticator(SessionManager sessionManager, OpenIdAuthDAO dao) {
+    public OpenIDAuthenticator(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
-        this.dao = dao;
     }
 
     @Override

@@ -11,16 +11,6 @@ import javax.validation.constraints.NotNull;
 
 public class BILCConfiguration extends Configuration {
 
-    enum AuthenticationType {
-        BASIC ("basic"),
-        OAUTH ("oauth");
-
-        String type;
-        AuthenticationType(String type) {
-            this.type = type;
-        }
-    }
-
     public static String SESSION_TOKEN_NAME = "BILC_SESSION";
 
     @NotEmpty
@@ -33,10 +23,6 @@ public class BILCConfiguration extends Configuration {
     @NotNull
     private DataSourceFactory database = new DataSourceFactory();
 
-    @Valid
-    @NotNull
-    private AuthenticationType authenticationType;
-
     private BasicAuthConfiguration basicAuthConfiguration;
 
     @JsonProperty
@@ -47,16 +33,6 @@ public class BILCConfiguration extends Configuration {
     @JsonProperty
     public void setBasicAuthConfiguration(BasicAuthConfiguration basicAuthConfiguration) {
         this.basicAuthConfiguration = basicAuthConfiguration;
-    }
-
-    @JsonProperty
-    public AuthenticationType getAuthenticationType() {
-        return authenticationType;
-    }
-
-    @JsonProperty
-    public void setAuthenticationType(AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
     }
 
     @JsonProperty
@@ -108,4 +84,5 @@ public class BILCConfiguration extends Configuration {
             this.masterKey = masterKey;
         }
     }
+
 }

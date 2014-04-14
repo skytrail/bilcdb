@@ -1,10 +1,11 @@
-package org.skytrail.bilcdb.auth;
+package org.skytrail.bilcdb.auth.basic;
 
 import com.google.inject.Inject;
 import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.basic.BasicCredentials;
 import org.skytrail.bilcdb.BILCConfiguration;
+import org.skytrail.bilcdb.auth.BILCAuthenticator;
 import org.skytrail.bilcdb.model.security.BasicAuth;
 import org.skytrail.bilcdb.model.security.DBUser;
 import org.skytrail.bilcdb.db.BasicAuthDAO;
@@ -16,7 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 
-public class DBBasicAuthenticator implements BasicAuthenticator {
+public class DBBasicAuthenticator implements BILCAuthenticator<BasicCredentials> {
 
     private final BasicAuthDAO basicAuthDAO;
     private final Cipher cipher;

@@ -8,6 +8,9 @@ import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import io.dropwizard.auth.Authenticator;
 import org.skytrail.bilcdb.auth.annotation.RestrictedTo;
+import org.skytrail.bilcdb.model.security.DBUser;
+
+import javax.inject.Inject;
 
 /**
  * <p>Authentication provider to provide the following to Jersey:</p>
@@ -16,12 +19,11 @@ import org.skytrail.bilcdb.auth.annotation.RestrictedTo;
  * <li>Provides additional {@link org.skytrail.bilcdb.model.security.Authority} information</li>
  * </ul>
  *
- * @param <T> the principal type.
  * @since 0.0.1
  */
-public class OpenIDRestrictedToProvider<T> implements InjectableProvider<RestrictedTo, Parameter> {
+public class OpenIDRestrictedToProvider implements InjectableProvider<RestrictedTo, DBUser> {
 
-    private final Authenticator<OpenIDCredentials, T> authenticator;
+    private final Authenticator<OpenIDCredentials, DBUser> authenticator;
     private final String realm;
 
     /**
@@ -31,7 +33,7 @@ public class OpenIDRestrictedToProvider<T> implements InjectableProvider<Restric
      *                      convert them into instances of {@code T}
      * @param realm         the name of the authentication realm
      */
-    public OpenIDRestrictedToProvider(Authenticator<OpenIDCredentials, T> authenticator, String realm) {
+    public OpenIDRestrictedToProvider(Authenticator<OpenIDCredentials, DBUser> authenticator, String realm) {
         this.authenticator = authenticator;
         this.realm = realm;
     }
@@ -42,10 +44,8 @@ public class OpenIDRestrictedToProvider<T> implements InjectableProvider<Restric
     }
 
     @Override
-    public Injectable<?> getInjectable(ComponentContext ic,
-                                       RestrictedTo a,
-                                       Parameter c) {
-        return new OpenIDRestrictedToInjectable<T>(authenticator, realm, a.value());
+    public Injectable getInjectable(ComponentContext componentContext, RestrictedTo restrictedTo, DBUser dbUser) {
+        return new OpenIDRestrictedToUser(authenticator, realm, restrictedTo.value());
     }
 }
 

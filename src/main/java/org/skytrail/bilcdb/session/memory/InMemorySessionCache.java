@@ -1,4 +1,4 @@
-package org.skytrail.bilcdb.session;
+package org.skytrail.bilcdb.session.memory;
 
 import com.google.common.base.Predicate;
 import com.google.common.cache.Cache;
@@ -6,6 +6,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.skytrail.bilcdb.model.security.Auth;
+import org.skytrail.bilcdb.session.SessionCache;
 
 import javax.annotation.Nullable;
 import java.util.Map;

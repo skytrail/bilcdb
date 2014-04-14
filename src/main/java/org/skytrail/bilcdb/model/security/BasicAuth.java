@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "basic_auth")
 @NamedQueries({
         @NamedQuery(
-                name = "com.example.helloworld.core.Person.findById",
-                query = "SELECT bau FROM basic_auth p WHERE p.key = :id"
+                name = "org.skytrail.bilcdb.model.security.BasucAuth.findById",
+                query = "SELECT bau FROM basic_auth ba WHERE ba.key = :id"
         )
 })
 
@@ -35,10 +35,6 @@ public class BasicAuth implements Auth {
         this.user = user;
     }
 
-    @Override
-    public String getIdentifier() {
-        return getKey();
-    }
     @Override
     public DBUser getUser() {
         return user;

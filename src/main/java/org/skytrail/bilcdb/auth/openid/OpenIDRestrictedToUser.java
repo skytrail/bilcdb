@@ -3,12 +3,14 @@ package org.skytrail.bilcdb.auth.openid;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import org.skytrail.bilcdb.BILCConfiguration;
 import org.skytrail.bilcdb.model.security.Authority;
+import org.skytrail.bilcdb.model.security.DBUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,6 @@ import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * <p>Injectable to provide the following to {@link OpenIDRestrictedToProvider}:</p>
@@ -29,11 +30,11 @@ import java.util.UUID;
  *
  * @since 0.0.1
  */
-class OpenIDRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
+class OpenIDRestrictedToUser extends AbstractHttpContextInjectable<DBUser> {
 
-    private static final Logger log = LoggerFactory.getLogger(OpenIDRestrictedToInjectable.class);
+    private static final Logger log = LoggerFactory.getLogger(OpenIDRestrictedToUser.class);
 
-    private final Authenticator<OpenIDCredentials, T> authenticator;
+    private final Authenticator<OpenIDCredentials, DBUser> authenticator;
     private final String realm;
     private final Set<Authority> requiredAuthorities;
 
@@ -42,8 +43,8 @@ class OpenIDRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
      * @param realm               The authentication realm
      * @param requiredAuthorities The required authorities as provided by the RestrictedTo annotation
      */
-    OpenIDRestrictedToInjectable(
-            Authenticator<OpenIDCredentials, T> authenticator,
+    OpenIDRestrictedToUser(
+            Authenticator<OpenIDCredentials, DBUser> authenticator,
             String realm,
             Authority[] requiredAuthorities) {
         this.authenticator = authenticator;
@@ -51,7 +52,7 @@ class OpenIDRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
         this.requiredAuthorities = Sets.newHashSet(Arrays.asList(requiredAuthorities));
     }
 
-    public Authenticator<OpenIDCredentials, T> getAuthenticator() {
+    public Authenticator<OpenIDCredentials, DBUser> getAuthenticator() {
         return authenticator;
     }
 
@@ -64,7 +65,7 @@ class OpenIDRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
     }
 
     @Override
-    public T getValue(HttpContext httpContext) {
+    public DBUser getValue(HttpContext httpContext) {
         try {
             // Get the Authorization header
             final Map<String, Cookie> cookieMap = httpContext.getRequest().getCookies();
@@ -78,7 +79,7 @@ class OpenIDRestrictedToInjectable<T> extends AbstractHttpContextInjectable<T> {
 
                 final OpenIDCredentials credentials = new OpenIDCredentials(sessionToken, requiredAuthorities);
 
-                final Optional<T> result = authenticator.authenticate(credentials);
+                final Optional<DBUser> result = authenticator.authenticate(credentials);
                 if (result.isPresent()) {
                     return result.get();
                 }

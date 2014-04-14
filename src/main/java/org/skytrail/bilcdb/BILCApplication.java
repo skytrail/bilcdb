@@ -1,9 +1,16 @@
 package org.skytrail.bilcdb;
 
-import org.skytrail.bilcdb.auth.DBBasicAuthenticator;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import org.skytrail.bilcdb.auth.basic.BasicAuthModule;
+import org.skytrail.bilcdb.auth.basic.DBBasicAuthenticator;
 import org.skytrail.bilcdb.auth.openid.OpenIDAuthenticator;
 import org.skytrail.bilcdb.auth.openid.OpenIDRestrictedToProvider;
+import org.skytrail.bilcdb.auth.openid.OpenIdCache;
+import org.skytrail.bilcdb.auth.openid.OpenIdModule;
 import org.skytrail.bilcdb.cli.RenderCommand;
+import org.skytrail.bilcdb.db.OpenIdAuthDAO;
 import org.skytrail.bilcdb.model.security.DBUser;
 import org.skytrail.bilcdb.model.Template;
 import org.skytrail.bilcdb.db.BasicAuthDAO;
@@ -18,6 +25,11 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import org.skytrail.bilcdb.resources.*;
+import org.skytrail.bilcdb.session.SessionManager;
+import org.skytrail.bilcdb.session.SessionModule;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BILCApplication extends Application<BILCConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -34,7 +46,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
 
     @Override
     public String getName() {
-        return "hello-world";
+        return "bilcdb";
     }
 
     @Override
@@ -54,17 +66,26 @@ public class BILCApplication extends Application<BILCConfiguration> {
     @Override
     public void run(BILCConfiguration configuration,
                     Environment environment) throws ClassNotFoundException {
-        final BasicAuthDAO dao = new BasicAuthDAO(hibernateBundle.getSessionFactory());
+
+        List<AbstractModule> modules = Arrays.asList(new SessionModule(), new OpenIdModule());
+
+        if (configuration.getBasicAuthConfiguration() != null) {
+            modules.add(new BasicAuthModule());
+        }
+        Injector injector = Guice.createInjector(modules);
+
         final Template template = configuration.buildTemplate();
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
-        environment.jersey().register(new BasicAuthProvider<>(new DBBasicAuthenticator(),
-                                                              "SUPER SECRET STUFF"));
-
-
-        environment.jersey().register(new OpenIDRestrictedToProvider<DBUser>(new OpenIDAuthenticator(), "OpenID"));
+        // TODO(jlh): Guice-ify this beyyer
+        environment.jersey().register(new OpenIDRestrictedToProvider(
+                new OpenIDAuthenticator(injector.getInstance(SessionManager.class)), "OpenID"));
         environment.jersey().register(new HelloWorldResource(template));
+        environment.jersey().register(new OpenIdResource(
+                injector.getInstance(OpenIdCache.class),
+                new OpenIdAuthDAO(hibernateBundle.getSessionFactory()),
+                injector.getInstance(SessionManager.class)));
         environment.jersey().register(new ViewResource());
     }
 }
