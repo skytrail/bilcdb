@@ -1,4 +1,4 @@
-package org.skytrail.bilcdb.core;
+package org.skytrail.bilcdb.model;
 
 import com.google.common.base.Optional;
 

@@ -1,7 +1,7 @@
 package org.skytrail.bilcdb.health;
 
 import com.codahale.metrics.health.HealthCheck;
-import org.skytrail.bilcdb.core.Template;
+import org.skytrail.bilcdb.model.Template;
 import com.google.common.base.Optional;
 
 public class TemplateHealthCheck extends HealthCheck {

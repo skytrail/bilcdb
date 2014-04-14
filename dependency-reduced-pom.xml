@@ -72,7 +72,7 @@
               <transformers>
                 <transformer />
                 <transformer>
-                  <mainClass>org.skytrail.bilcdb.HelloWorldApplication</mainClass>
+                  <mainClass>org.skytrail.bilcdb.BILCApplication</mainClass>
                 </transformer>
               </transformers>
             </configuration>

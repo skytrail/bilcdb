@@ -1,10 +1,12 @@
 package org.skytrail.bilcdb;
 
-import org.skytrail.bilcdb.auth.ExampleAuthenticator;
+import org.skytrail.bilcdb.auth.DBBasicAuthenticator;
+import org.skytrail.bilcdb.auth.openid.OpenIDAuthenticator;
+import org.skytrail.bilcdb.auth.openid.OpenIDRestrictedToProvider;
 import org.skytrail.bilcdb.cli.RenderCommand;
-import org.skytrail.bilcdb.core.Person;
-import org.skytrail.bilcdb.core.Template;
-import org.skytrail.bilcdb.db.PersonDAO;
+import org.skytrail.bilcdb.model.security.DBUser;
+import org.skytrail.bilcdb.model.Template;
+import org.skytrail.bilcdb.db.BasicAuthDAO;
 import org.skytrail.bilcdb.health.TemplateHealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -17,15 +19,15 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import org.skytrail.bilcdb.resources.*;
 
-public class HelloWorldApplication extends Application<HelloWorldConfiguration> {
+public class BILCApplication extends Application<BILCConfiguration> {
     public static void main(String[] args) throws Exception {
-        new HelloWorldApplication().run(args);
+        new BILCApplication().run(args);
     }
 
-    private final HibernateBundle<HelloWorldConfiguration> hibernateBundle =
-            new HibernateBundle<HelloWorldConfiguration>(Person.class) {
+    private final HibernateBundle<BILCConfiguration> hibernateBundle =
+            new HibernateBundle<BILCConfiguration>(DBUser.class) {
                 @Override
-                public DataSourceFactory getDataSourceFactory(HelloWorldConfiguration configuration) {
+                public DataSourceFactory getDataSourceFactory(BILCConfiguration configuration) {
                     return configuration.getDataSourceFactory();
                 }
             };
@@ -36,12 +38,12 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     }
 
     @Override
-    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+    public void initialize(Bootstrap<BILCConfiguration> bootstrap) {
         bootstrap.addCommand(new RenderCommand());
         bootstrap.addBundle(new AssetsBundle());
-        bootstrap.addBundle(new MigrationsBundle<HelloWorldConfiguration>() {
+        bootstrap.addBundle(new MigrationsBundle<BILCConfiguration>() {
             @Override
-            public DataSourceFactory getDataSourceFactory(HelloWorldConfiguration configuration) {
+            public DataSourceFactory getDataSourceFactory(BILCConfiguration configuration) {
                 return configuration.getDataSourceFactory();
             }
         });
@@ -50,19 +52,19 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     }
 
     @Override
-    public void run(HelloWorldConfiguration configuration,
+    public void run(BILCConfiguration configuration,
                     Environment environment) throws ClassNotFoundException {
-        final PersonDAO dao = new PersonDAO(hibernateBundle.getSessionFactory());
+        final BasicAuthDAO dao = new BasicAuthDAO(hibernateBundle.getSessionFactory());
         final Template template = configuration.buildTemplate();
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
-        environment.jersey().register(new BasicAuthProvider<>(new ExampleAuthenticator(),
+        environment.jersey().register(new BasicAuthProvider<>(new DBBasicAuthenticator(),
                                                               "SUPER SECRET STUFF"));
+
+
+        environment.jersey().register(new OpenIDRestrictedToProvider<DBUser>(new OpenIDAuthenticator(), "OpenID"));
         environment.jersey().register(new HelloWorldResource(template));
         environment.jersey().register(new ViewResource());
-        environment.jersey().register(new ProtectedResource());
-        environment.jersey().register(new PeopleResource(dao));
-        environment.jersey().register(new PersonResource(dao));
     }
 }

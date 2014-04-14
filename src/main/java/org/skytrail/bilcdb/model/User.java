@@ -1,4 +1,4 @@
-package org.skytrail.bilcdb.core;
+package org.skytrail.bilcdb.model;
 
 public class User {
     private final String name;

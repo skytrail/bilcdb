@@ -1,14 +1,14 @@
 package org.skytrail.bilcdb.views;
 
-import org.skytrail.bilcdb.core.Person;
+import org.skytrail.bilcdb.model.security.DBUser;
 
 import io.dropwizard.views.View;
 
 public class PersonView extends View {
-    private final Person person;
+    private final DBUser DBUser;
     public enum Template{
-    	FREEMARKER("freemarker/person.ftl"),
-    	MUSTACHE("mustache/person.mustache");
+    	FREEMARKER("freemarker/DBUser.ftl"),
+    	MUSTACHE("mustache/DBUser.mustache");
     	
     	private String templateName;
     	private Template(String templateName){
@@ -20,12 +20,12 @@ public class PersonView extends View {
     	}
     }
 
-    public PersonView(PersonView.Template template, Person person) {
+    public PersonView(PersonView.Template template, DBUser DBUser) {
         super(template.getTemplateName());
-        this.person = person;
+        this.DBUser = DBUser;
     }
 
-    public Person getPerson() {
-        return person;
+    public DBUser getDBUser() {
+        return DBUser;
     }
 }

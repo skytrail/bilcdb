@@ -1,8 +1,8 @@
 package org.skytrail.bilcdb.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import org.skytrail.bilcdb.core.Saying;
-import org.skytrail.bilcdb.core.Template;
+import org.skytrail.bilcdb.model.Saying;
+import org.skytrail.bilcdb.model.Template;
 import com.google.common.base.Optional;
 import io.dropwizard.jersey.caching.CacheControl;
 import org.slf4j.Logger;

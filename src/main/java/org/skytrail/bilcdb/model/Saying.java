@@ -1,4 +1,4 @@
-package org.skytrail.bilcdb.core;
+package org.skytrail.bilcdb.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
