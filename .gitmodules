@@ -1,0 +1,3 @@
+[submodule "src/main/resources/org/skytrail/bilcdb/ui"]
+	path = src/main/resources/org/skytrail/bilcdb/ui
+	url = https://github.com/skytrail/bilcdb-ui
