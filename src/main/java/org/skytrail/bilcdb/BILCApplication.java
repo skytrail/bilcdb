@@ -52,7 +52,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
     @Override
     public void initialize(Bootstrap<BILCConfiguration> bootstrap) {
         bootstrap.addCommand(new RenderCommand());
-        bootstrap.addBundle(new AssetsBundle());
+        bootstrap.addBundle(new AssetsBundle("/org/skytrail/bilcdb/ui/app", "/app"));
         bootstrap.addBundle(new MigrationsBundle<BILCConfiguration>() {
             @Override
             public DataSourceFactory getDataSourceFactory(BILCConfiguration configuration) {
@@ -78,7 +78,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
-        // TODO(jlh): Guice-ify this beyyer
+        // TODO(jlh): Guice-ify this better
         environment.jersey().register(new OpenIDRestrictedToProvider(
                 new OpenIDAuthenticator(injector.getInstance(SessionManager.class)), "OpenID"));
         environment.jersey().register(new HelloWorldResource(template));
