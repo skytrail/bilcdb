@@ -4,20 +4,18 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.skytrail.bilcdb.auth.basic.BasicAuthModule;
-import org.skytrail.bilcdb.auth.basic.DBBasicAuthenticator;
 import org.skytrail.bilcdb.auth.openid.OpenIDAuthenticator;
 import org.skytrail.bilcdb.auth.openid.OpenIDRestrictedToProvider;
 import org.skytrail.bilcdb.auth.openid.OpenIdCache;
 import org.skytrail.bilcdb.auth.openid.OpenIdModule;
 import org.skytrail.bilcdb.cli.RenderCommand;
 import org.skytrail.bilcdb.db.OpenIdAuthDAO;
+import org.skytrail.bilcdb.filters.UIFilter;
 import org.skytrail.bilcdb.model.security.DBUser;
 import org.skytrail.bilcdb.model.Template;
-import org.skytrail.bilcdb.db.BasicAuthDAO;
 import org.skytrail.bilcdb.health.TemplateHealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
-import io.dropwizard.auth.basic.BasicAuthProvider;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -28,7 +26,9 @@ import org.skytrail.bilcdb.resources.*;
 import org.skytrail.bilcdb.session.SessionManager;
 import org.skytrail.bilcdb.session.SessionModule;
 
+import javax.servlet.DispatcherType;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 public class BILCApplication extends Application<BILCConfiguration> {
@@ -52,7 +52,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
     @Override
     public void initialize(Bootstrap<BILCConfiguration> bootstrap) {
         bootstrap.addCommand(new RenderCommand());
-        bootstrap.addBundle(new AssetsBundle("/org/skytrail/bilcdb/ui/app", "/app"));
+        bootstrap.addBundle(new AssetsBundle("/org/skytrail/bilcdb/ui/app", "/database"));
         bootstrap.addBundle(new MigrationsBundle<BILCConfiguration>() {
             @Override
             public DataSourceFactory getDataSourceFactory(BILCConfiguration configuration) {
@@ -78,6 +78,9 @@ public class BILCApplication extends Application<BILCConfiguration> {
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
+        environment.servlets().addFilter("DBFilter",
+                new UIFilter(new UIFilter.Redirect("/database", "/database/index.html")))
+                    .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
         // TODO(jlh): Guice-ify this better
         environment.jersey().register(new OpenIDRestrictedToProvider(
                 new OpenIDAuthenticator(injector.getInstance(SessionManager.class)), "OpenID"));
