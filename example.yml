@@ -66,3 +66,8 @@ logging:
 
   appenders:
     - type: console
+
+assets:
+  overrides:
+    /database: src/main/resources/org/skytrail/bilcdb/ui
+

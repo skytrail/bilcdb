@@ -1,5 +1,7 @@
 package org.skytrail.bilcdb;
 
+import com.bazaarvoice.dropwizard.assets.AssetsBundleConfiguration;
+import com.bazaarvoice.dropwizard.assets.AssetsConfiguration;
 import org.skytrail.bilcdb.model.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
@@ -9,7 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class BILCConfiguration extends Configuration {
+public class BILCConfiguration extends Configuration implements AssetsBundleConfiguration {
 
     public static String SESSION_TOKEN_NAME = "BILC_SESSION";
 
@@ -24,6 +26,11 @@ public class BILCConfiguration extends Configuration {
     private DataSourceFactory database = new DataSourceFactory();
 
     private BasicAuthConfiguration basicAuthConfiguration;
+
+    @NotNull
+    @Valid
+    @JsonProperty
+    private final AssetsConfiguration assets = new AssetsConfiguration();
 
     @JsonProperty
     public BasicAuthConfiguration getBasicAuthConfiguration() {
@@ -67,6 +74,11 @@ public class BILCConfiguration extends Configuration {
     @JsonProperty("database")
     public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
         this.database = dataSourceFactory;
+    }
+
+    @Override
+    public AssetsConfiguration getAssetsConfiguration() {
+        return assets;
     }
 
     public class BasicAuthConfiguration {

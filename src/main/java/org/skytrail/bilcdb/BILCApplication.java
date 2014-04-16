@@ -1,5 +1,6 @@
 package org.skytrail.bilcdb;
 
+import com.bazaarvoice.dropwizard.assets.ConfiguredAssetsBundle;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -52,7 +53,8 @@ public class BILCApplication extends Application<BILCConfiguration> {
     @Override
     public void initialize(Bootstrap<BILCConfiguration> bootstrap) {
         bootstrap.addCommand(new RenderCommand());
-        bootstrap.addBundle(new AssetsBundle("/org/skytrail/bilcdb/ui/app", "/database"));
+        bootstrap.addBundle(new ConfiguredAssetsBundle("/org/skytrail/bilcdb/ui", "/database"));
+
         bootstrap.addBundle(new MigrationsBundle<BILCConfiguration>() {
             @Override
             public DataSourceFactory getDataSourceFactory(BILCConfiguration configuration) {
@@ -78,9 +80,10 @@ public class BILCApplication extends Application<BILCConfiguration> {
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
-        environment.servlets().addFilter("DBFilter",
+     /*   environment.servlets().addFilter("DBFilter",
                 new UIFilter(new UIFilter.Redirect("/database", "/database/index.html")))
                     .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+                    */
         // TODO(jlh): Guice-ify this better
         environment.jersey().register(new OpenIDRestrictedToProvider(
                 new OpenIDAuthenticator(injector.getInstance(SessionManager.class)), "OpenID"));

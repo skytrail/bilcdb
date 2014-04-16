@@ -24,7 +24,12 @@
     </repositories>
 
     <dependencies>
-        <!-- OpenID heavy lifting -->
+        <dependency>
+            <groupId>com.bazaarvoice.dropwizard</groupId>
+            <artifactId>dropwizard-configurable-assets-bundle</artifactId>
+            <version>0.2.0-rc1</version>
+            </dependency>
+            <!-- OpenID heavy lifting -->
          <dependency>
             <groupId>org.openid4java</groupId>
             <artifactId>openid4java-consumer</artifactId>
