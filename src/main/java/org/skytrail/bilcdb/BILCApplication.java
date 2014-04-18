@@ -16,7 +16,6 @@ import org.skytrail.bilcdb.model.security.DBUser;
 import org.skytrail.bilcdb.model.Template;
 import org.skytrail.bilcdb.health.TemplateHealthCheck;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
@@ -53,7 +52,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
     @Override
     public void initialize(Bootstrap<BILCConfiguration> bootstrap) {
         bootstrap.addCommand(new RenderCommand());
-        bootstrap.addBundle(new ConfiguredAssetsBundle("/org/skytrail/bilcdb/ui", "/database"));
+        bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/ui"));
 
         bootstrap.addBundle(new MigrationsBundle<BILCConfiguration>() {
             @Override
@@ -80,10 +79,10 @@ public class BILCApplication extends Application<BILCConfiguration> {
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
-     /*   environment.servlets().addFilter("DBFilter",
-                new UIFilter(new UIFilter.Redirect("/database", "/database/index.html")))
+        environment.servlets().addFilter("DBFilter",
+                new UIFilter(new UIFilter.Redirect("/database", "/ui/database/index.html")))
                     .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-                    */
+
         // TODO(jlh): Guice-ify this better
         environment.jersey().register(new OpenIDRestrictedToProvider(
                 new OpenIDAuthenticator(injector.getInstance(SessionManager.class)), "OpenID"));
