@@ -52,7 +52,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
     @Override
     public void initialize(Bootstrap<BILCConfiguration> bootstrap) {
         bootstrap.addCommand(new RenderCommand());
-        bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/ui"));
+        bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/bilc"));
 
         bootstrap.addBundle(new MigrationsBundle<BILCConfiguration>() {
             @Override
@@ -80,7 +80,7 @@ public class BILCApplication extends Application<BILCConfiguration> {
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
 
         environment.servlets().addFilter("DBFilter",
-                new UIFilter(new UIFilter.Redirect("/database", "/ui/database/index.html")))
+                new UIFilter(new UIFilter.Redirect("/database", "/bilc/dbui/index.html")))
                     .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
         // TODO(jlh): Guice-ify this better

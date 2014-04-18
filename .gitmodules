@@ -1,3 +1,9 @@
 [submodule "src/main/resources/assets/database"]
 	path = src/main/resources/assets/database
 	url = https://github.com/skytrail/bilcdb-ui
+[submodule "src/main/resources/assets/database/dbui"]
+	path = src/main/resources/assets/database/dbui
+	url = https://github.com/skytrail/bilcdb-ui.git
+[submodule "src/main/resources/assets/dbui"]
+	path = src/main/resources/assets/dbui
+	url = https://github.com/skytrail/bilcdb-ui.git

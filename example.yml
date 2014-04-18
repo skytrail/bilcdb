@@ -69,5 +69,5 @@ logging:
 
 assets:
   overrides:
-    /database: src/main/resources/org/skytrail/bilcdb/ui
+    /bilc: src/main/resources/assets/
 
