@@ -2,6 +2,7 @@ package org.skytrail.bilcdb.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import io.dropwizard.hibernate.UnitOfWork;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
@@ -71,6 +72,7 @@ public class OpenIdResource extends BaseResource {
      * @return A login view with a session token
      */
     @GET
+    @UnitOfWork
     @Path("/logout")
     public Response logout() {
         // TODO (jlh): clear all user sessions
@@ -85,6 +87,7 @@ public class OpenIdResource extends BaseResource {
      */
     @GET
     @Path("/login")
+    @UnitOfWork
     @SuppressWarnings("unchecked")
     public Response authenticationRequest(
             @Context
@@ -189,6 +192,7 @@ public class OpenIdResource extends BaseResource {
      * @return The OpenId identifier for this user if verification was successful
      */
     @GET
+    @UnitOfWork
     @Path("/verify")
     public Response verifyOpenIdServerResponse(
             @Context HttpServletRequest request,

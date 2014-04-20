@@ -87,6 +87,5 @@ public class BILCApplication extends Application<BILCConfiguration> {
                 injector.getInstance(OpenIdCache.class),
                 new OpenIdAuthDAO(hibernateBundle.getSessionFactory()),
                 injector.getInstance(SessionManager.class)));
-        environment.jersey().register(new ViewResource());
     }
 }
