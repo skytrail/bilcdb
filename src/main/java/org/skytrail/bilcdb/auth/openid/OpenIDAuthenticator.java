@@ -4,8 +4,7 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.dropwizard.auth.AuthenticationException;
 import org.skytrail.bilcdb.auth.BILCAuthenticator;
-import org.skytrail.bilcdb.db.OpenIdAuthDAO;
-import org.skytrail.bilcdb.model.security.DBUser;
+import org.skytrail.bilcdb.model.security.DbUser;
 import org.skytrail.bilcdb.session.SessionManager;
 
 /**
@@ -26,11 +25,11 @@ public class OpenIDAuthenticator implements BILCAuthenticator<OpenIDCredentials>
     }
 
     @Override
-    public Optional<DBUser> authenticate(OpenIDCredentials credentials) throws AuthenticationException {
+    public Optional<DbUser> authenticate(OpenIDCredentials credentials) throws AuthenticationException {
 
         // Make sure the user exists in the cache
         // Get the User referred to by the API key
-        Optional<DBUser> user = sessionManager.get(credentials.getSessionToken());
+        Optional<DbUser> user = sessionManager.get(credentials.getSessionToken());
         if (!user.isPresent()) {
             return Optional.absent();
         }

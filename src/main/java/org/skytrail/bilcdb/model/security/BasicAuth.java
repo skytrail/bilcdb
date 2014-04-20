@@ -20,7 +20,7 @@ public class BasicAuth implements Auth {
     private String key;
 
     @Column(name = "user", nullable = false)
-    private DBUser user;
+    private DbUser user;
 
     public String getKey() {
         return key;
@@ -31,12 +31,12 @@ public class BasicAuth implements Auth {
     }
 
 
-    public void setUser(DBUser user) {
+    public void setUser(DbUser user) {
         this.user = user;
     }
 
     @Override
-    public DBUser getUser() {
+    public DbUser getUser() {
         return user;
     }
 

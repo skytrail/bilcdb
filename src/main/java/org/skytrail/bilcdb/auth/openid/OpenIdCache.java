@@ -2,7 +2,7 @@ package org.skytrail.bilcdb.auth.openid;
 
 import com.google.common.base.Optional;
 import io.dropwizard.auth.Authenticator;
-import org.skytrail.bilcdb.model.security.DBUser;
+import org.skytrail.bilcdb.model.security.DbUser;
 
 /**
  * Created by herndon on 4/13/14.
@@ -13,7 +13,7 @@ public interface OpenIdCache {
     public String putMemento(DiscoveryInformationMemento memento);
     public void deleteMemento(String sessionId);
 
-    interface OAuthAuthenticator extends Authenticator<String, DBUser> {
+    interface OAuthAuthenticator extends Authenticator<String, DbUser> {
     }
 }
 

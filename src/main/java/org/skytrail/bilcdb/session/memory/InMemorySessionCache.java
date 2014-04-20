@@ -50,4 +50,9 @@ public class InMemorySessionCache implements SessionCache {
             }
         }).keySet();
     }
+
+    @Override
+    public void delete(String sessionId) {
+        cache.invalidate(sessionId);
+    }
 }

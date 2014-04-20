@@ -6,15 +6,37 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <changeSet id="1" author="codahale">
-        <createTable tableName="people">
-            <column name="id" type="bigint" autoIncrement="true">
+    <changeSet id="1" author="egorps">
+        <createTable tableName="dbusers">
+            <column name="userId" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="fullName" type="varchar(255)">
+            <column name="firstName" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="jobTitle" type="varchar(255)"/>
+            <column name="lastName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="emailAddress" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verified" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="openid">
+            <column name="id" type="varchar(255)" autoIncrement="false">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="userId" type="bigInt">
+                <constraints nullable="false" referencedTableName="dbusers" foreignKeyName="userId"/>
+            </column>
+            <column name="lastName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="emailAddress" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

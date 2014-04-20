@@ -2,7 +2,7 @@ package org.skytrail.bilcdb.session;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import org.skytrail.bilcdb.model.security.DBUser;
+import org.skytrail.bilcdb.model.security.DbUser;
 import org.skytrail.bilcdb.model.security.Auth;
 
 public class SessionManager {
@@ -13,8 +13,8 @@ public class SessionManager {
         this.cache = sessionCache;
     }
 
-    public Optional<DBUser> get(String sessionId) {
-        DBUser user = cache.getBySessionId(sessionId).getUser();
+    public Optional<DbUser> get(String sessionId) {
+        DbUser user = cache.getBySessionId(sessionId).getUser();
         if (user != null) {
            return Optional.of(user);
         }
@@ -26,5 +26,9 @@ public class SessionManager {
             return session;
         }
         return cache.put(auth);
+    }
+
+    public void deleteSession(String session) {
+        cache.delete(session);
     }
 }

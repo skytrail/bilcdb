@@ -3,11 +3,11 @@ package org.skytrail.bilcdb.model.security;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "oid_auth")
+@Table(name = "openid")
 @NamedQueries({
         @NamedQuery(
                 name = "org.skytrail.bilcdb.model.security.OpenIdAuth.findById",
-                query = "SELECT oidu FROM oid_auth oid WHERE oid.key = :id"
+                query = "SELECT o FROM OpenIdAuth o WHERE o.id = :id"
         )
 })
 
@@ -16,16 +16,16 @@ public class OpenIdAuth implements Auth {
     @Column(name = "id", nullable = false)
     private String openIdIdentifier;
 
-    @Column(name = "user", nullable = false)
-    private DBUser user;
+    @OneToOne
+    @JoinColumn(name="userId")
+    private DbUser user;
 
     @Override
-    public DBUser getUser() {
+    public DbUser getUser() {
         return user;
     }
 
-
-    public void setUser(DBUser user) {
+    public void setUser(DbUser user) {
         this.user = user;
     }
 

@@ -21,7 +21,7 @@ import org.skytrail.bilcdb.BILCConfiguration;
 import org.skytrail.bilcdb.auth.openid.DiscoveryInformationMemento;
 import org.skytrail.bilcdb.auth.openid.OpenIdCache;
 import org.skytrail.bilcdb.db.OpenIdAuthDAO;
-import org.skytrail.bilcdb.model.security.DBUser;
+import org.skytrail.bilcdb.model.security.DbUser;
 import org.skytrail.bilcdb.model.security.OpenIdAuth;
 import org.skytrail.bilcdb.session.SessionManager;
 import org.slf4j.Logger;
@@ -68,15 +68,13 @@ public class OpenIdResource extends BaseResource {
         this.sessionManager = sessionManager;
     }
 
-    /**
-     * @return A login view with a session token
-     */
     @GET
     @UnitOfWork
     @Path("/logout")
-    public Response logout() {
+    public Response logout(@Context HttpServletRequest request) {
         // TODO (jlh): clear all user sessions
-        return null;
+        sessionManager.deleteSession(SessionHelper.getSessionToken(request));
+        return Response.seeOther(URI.create("www.google.com")).build();
     }
 
     /**
@@ -270,12 +268,12 @@ public class OpenIdResource extends BaseResource {
                 // and replace it with a potentially new one
                 openIDCache.deleteMemento(rawToken);
 
-                Optional<OpenIdAuth> authOptional = dao.findByKey(verified.get().getIdentifier());
+                Optional<OpenIdAuth> authOptional = dao.findById(verified.get().getIdentifier());
                 OpenIdAuth auth;
                 if (!authOptional.isPresent()) {
                     auth = new OpenIdAuth();
                     auth.setOpenIdIdentifier(verified.get().getIdentifier());
-                    DBUser newUser = new DBUser();
+                    DbUser newUser = new DbUser();
 
                     // TODO(jlh): add the user roles here
                     // tempUser.getAuthorities().add(Authority.ROLE_PUBLIC);
@@ -293,8 +291,14 @@ public class OpenIdResource extends BaseResource {
 
                 // TODO(jlh): this needs to return the right data so angular can render that the user is logged in
                 // maybe the email address?
+
+                String home = String.format(
+                        "http://%s:%d/bilc/dbui/index.html",
+                        request.getServerName(),
+                        request.getServerPort());
+
                 return Response
-                        .ok()
+                        .seeOther(URI.create(home))
                         .cookie(replaceSessionTokenCookie(newSessionId))
                         .build();
 

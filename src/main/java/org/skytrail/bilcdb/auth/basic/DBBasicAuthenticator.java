@@ -7,7 +7,7 @@ import io.dropwizard.auth.basic.BasicCredentials;
 import org.skytrail.bilcdb.BILCConfiguration;
 import org.skytrail.bilcdb.auth.BILCAuthenticator;
 import org.skytrail.bilcdb.model.security.BasicAuth;
-import org.skytrail.bilcdb.model.security.DBUser;
+import org.skytrail.bilcdb.model.security.DbUser;
 import org.skytrail.bilcdb.db.BasicAuthDAO;
 
 import javax.crypto.Cipher;
@@ -37,7 +37,7 @@ public class DBBasicAuthenticator implements BILCAuthenticator<BasicCredentials>
     }
 
     @Override
-    public Optional<DBUser> authenticate(BasicCredentials credentials) throws AuthenticationException {
+    public Optional<DbUser> authenticate(BasicCredentials credentials) throws AuthenticationException {
         Optional<BasicAuth> auth = basicAuthDAO.findByKey(getPasswordKey(credentials.getPassword()));
         if(auth.isPresent()) {
             return Optional.of(auth.get().getUser());

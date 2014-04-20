@@ -6,4 +6,5 @@ public interface SessionCache {
     public String put(Auth auth);
     public Auth getBySessionId(String sessionId);
     public Iterable<String> getByAuth(Auth auth);
+    public void delete(String sessionId);
 }

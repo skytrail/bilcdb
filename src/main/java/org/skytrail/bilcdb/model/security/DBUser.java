@@ -3,17 +3,19 @@ package org.skytrail.bilcdb.model.security;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "people")
+@Table(name = "dbusers")
 @NamedQueries({
     @NamedQuery(
         name = "org.skytrail.bilcdb.model.security.DBUser.findById",
-        query = "SELECT p FROM DBUser p WHERE p.id = :id"
+        query = "SELECT u FROM DbUser u WHERE u.userId = :id"
     )
 })
-public class DBUser {
+
+public class DbUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name="userId")
+    private long userId;
 
     @Column(name = "firstName", nullable = false)
     private String firstName;
@@ -21,15 +23,15 @@ public class DBUser {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @Column(name = "emailAddress", nullable = true)
+    @Column(name = "emailAddress", nullable = false)
     private String emailAddress;
 
     public long getId() {
-        return id;
+        return userId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getFirstName() {

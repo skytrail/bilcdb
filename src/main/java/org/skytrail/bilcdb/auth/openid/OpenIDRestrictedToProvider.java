@@ -1,16 +1,13 @@
 package org.skytrail.bilcdb.auth.openid;
 
 
-import com.sun.jersey.api.model.Parameter;
 import com.sun.jersey.core.spi.component.ComponentContext;
 import com.sun.jersey.core.spi.component.ComponentScope;
 import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import io.dropwizard.auth.Authenticator;
 import org.skytrail.bilcdb.auth.annotation.RestrictedTo;
-import org.skytrail.bilcdb.model.security.DBUser;
-
-import javax.inject.Inject;
+import org.skytrail.bilcdb.model.security.DbUser;
 
 /**
  * <p>Authentication provider to provide the following to Jersey:</p>
@@ -21,9 +18,9 @@ import javax.inject.Inject;
  *
  * @since 0.0.1
  */
-public class OpenIDRestrictedToProvider implements InjectableProvider<RestrictedTo, DBUser> {
+public class OpenIDRestrictedToProvider implements InjectableProvider<RestrictedTo, DbUser> {
 
-    private final Authenticator<OpenIDCredentials, DBUser> authenticator;
+    private final Authenticator<OpenIDCredentials, DbUser> authenticator;
     private final String realm;
 
     /**
@@ -33,7 +30,7 @@ public class OpenIDRestrictedToProvider implements InjectableProvider<Restricted
      *                      convert them into instances of {@code T}
      * @param realm         the name of the authentication realm
      */
-    public OpenIDRestrictedToProvider(Authenticator<OpenIDCredentials, DBUser> authenticator, String realm) {
+    public OpenIDRestrictedToProvider(Authenticator<OpenIDCredentials, DbUser> authenticator, String realm) {
         this.authenticator = authenticator;
         this.realm = realm;
     }
@@ -44,7 +41,7 @@ public class OpenIDRestrictedToProvider implements InjectableProvider<Restricted
     }
 
     @Override
-    public Injectable getInjectable(ComponentContext componentContext, RestrictedTo restrictedTo, DBUser dbUser) {
+    public Injectable getInjectable(ComponentContext componentContext, RestrictedTo restrictedTo, DbUser dbUser) {
         return new OpenIDRestrictedToUser(authenticator, realm, restrictedTo.value());
     }
 }
