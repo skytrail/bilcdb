@@ -83,12 +83,13 @@ public class OpenIdResource extends BaseResource {
      * @param identifier The identifier for the OpenId server
      * @return A redirection or a form view containing user-specific permissions
      */
-    @POST
+    @GET
+    @Path("/login")
     @SuppressWarnings("unchecked")
     public Response authenticationRequest(
             @Context
             HttpServletRequest request,
-            @FormParam("identifier")
+            @QueryParam("identifier")
             String identifier
     ) {
 
@@ -166,9 +167,11 @@ public class OpenIdResource extends BaseResource {
             // Attach the extension to the authentication request
             authReq.addExtension(fetch);
 
-            return Response
+            Response r = Response
                     .seeOther(URI.create(authReq.getDestinationUrl(true)))
+                    .header("Access-Control-Allow-Origin", "*")
                     .build();
+            return  r;
 
         } catch (MessageException e1) {
             log.error("MessageException:", e1);

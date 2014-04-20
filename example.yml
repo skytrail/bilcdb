@@ -69,5 +69,5 @@ logging:
 
 assets:
   overrides:
-    /bilc: src/main/resources/assets/
+    /bilc: src/main/resources/assets
 
