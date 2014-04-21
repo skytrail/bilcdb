@@ -10,6 +10,7 @@ import org.skytrail.bilcdb.session.SessionCache;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,8 +33,9 @@ public class InMemorySessionCache implements SessionCache {
 
     @Override
     public String put(Auth auth) {
-        cache.put("Hello_World", auth);
-        return "Hello_World";
+        String sessionId = UUID.randomUUID().toString();
+        cache.put(sessionId, auth);
+        return sessionId;
     }
 
     @Override

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,10 +39,7 @@ public class UserResource {
             return Response.ok(dbUser, MediaType.APPLICATION_JSON_TYPE).build();
         }
 
-        // Todo - turn this into an exception that is mapped to the proper response code
-        return Response
-                .status(Response.Status.NOT_FOUND)
-                .build();
+        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
     }
 
 }

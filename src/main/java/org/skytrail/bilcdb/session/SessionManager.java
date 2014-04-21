@@ -5,6 +5,9 @@ import com.google.inject.Inject;
 import org.skytrail.bilcdb.model.security.DbUser;
 import org.skytrail.bilcdb.model.security.Auth;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 public class SessionManager {
 
     SessionCache cache;
@@ -14,7 +17,11 @@ public class SessionManager {
     }
 
     public Optional<DbUser> get(String sessionId) {
-        DbUser user = cache.getBySessionId(sessionId).getUser();
+        Auth auth = cache.getBySessionId(sessionId);
+        if (auth == null) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+        DbUser user = auth.getUser();
         if (user != null) {
            return Optional.of(user);
         }
